@@ -2,7 +2,7 @@ class MealyError(Exception):
     pass
 
 
-class Mealy:
+class Shit:
     def __init__(self):
         self.state = 'A'
 
@@ -58,32 +58,57 @@ class Mealy:
                 raise MealyError("look")
 
 
+def try_tread(obj, state, val=None):
+    obj.state = state
+    try:
+        assert (obj.tread() == val)
+    except MealyError:
+        pass
+
+
+def try_look(obj, state, val=None):
+    obj.state = state
+    try:
+        assert (obj.look() == val)
+    except MealyError:
+        pass
+
+
+def try_slog(obj, state, val=None):
+    obj.state = state
+    try:
+        assert (obj.slog() == val)
+    except MealyError:
+        pass
+
+
 def test():
-    o = main()
-    cases = {
-        'A': {'slog': 0, 'tread': MealyError, 'look': MealyError},
-        'B': {'slog': MealyError, 'tread': 1, 'look': MealyError},
-        'C': {'slog': 4, 'tread': 3, 'look': 2},
-        'D': {'slog': MealyError, 'tread': MealyError, 'look': 5},
-        'E': {'slog': MealyError, 'tread': 6, 'look': MealyError},
-        'F': {'slog': MealyError, 'tread': MealyError, 'look': 7},
-        'G': {'slog': 9, 'tread': 8, 'look': MealyError},
-        'H': {'slog': MealyError, 'tread': 11, 'look': 10}
-    }
-    for initial_state in cases:
-        for method in cases[initial_state]:
-            o.state = initial_state
-            if type(cases[initial_state][method]) is int:
-                assert getattr(o, method)() == cases[initial_state][method]
-            else:
-                try:
-                    getattr(o, method)()
-                except MealyError:
-                    pass
+    obj = main()
+    try_tread(obj, 'A')
+    try_look(obj, 'A')
+    try_slog(obj, 'A', 0)
+    try_look(obj, 'B')
+    try_slog(obj, 'B')
+    try_tread(obj, 'B', 1)
+    try_look(obj, 'C', 2)
+    try_slog(obj, 'C', 4)
+    try_tread(obj, 'C', 3)
+    try_look(obj, 'D', 5)
+    try_slog(obj, 'D')
+    try_tread(obj, 'D')
+    try_look(obj, 'E')
+    try_slog(obj, 'E')
+    try_tread(obj, 'E', 6)
+    try_look(obj, 'F', 7)
+    try_slog(obj, 'F')
+    try_tread(obj, 'F')
+    try_look(obj, 'G')
+    try_slog(obj, 'G', 9)
+    try_tread(obj, 'G', 8)
+    try_look(obj, 'H', 10)
+    try_slog(obj, 'H')
+    try_tread(obj, 'H', 11)
 
 
 def main():
-    return Mealy()
-
-
-test()
+    return Shit()
