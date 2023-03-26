@@ -58,56 +58,44 @@ class Shit:
                 raise MealyError("look")
 
 
-def try_tread(obj, state, val=None):
-    obj.state = state
+def try_tread(obj, val):
     try:
         assert (obj.tread() == val)
     except MealyError:
         pass
 
 
-def try_look(obj, state, val=None):
-    obj.state = state
+def try_look(obj, val):
     try:
         assert (obj.look() == val)
     except MealyError:
         pass
 
 
-def try_slog(obj, state, val=None):
-    obj.state = state
+def try_slog(obj, val):
     try:
         assert (obj.slog() == val)
     except MealyError:
         pass
 
 
+def try_methods(obj, state, tread_val=None, look_val=None, slog_val=None):
+    obj.state = state
+    try_tread(obj, tread_val)
+    try_look(obj, look_val)
+    try_slog(obj, slog_val)
+
+
 def test():
     obj = main()
-    try_tread(obj, 'A')
-    try_look(obj, 'A')
-    try_slog(obj, 'A', 0)
-    try_look(obj, 'B')
-    try_slog(obj, 'B')
-    try_tread(obj, 'B', 1)
-    try_look(obj, 'C', 2)
-    try_slog(obj, 'C', 4)
-    try_tread(obj, 'C', 3)
-    try_look(obj, 'D', 5)
-    try_slog(obj, 'D')
-    try_tread(obj, 'D')
-    try_look(obj, 'E')
-    try_slog(obj, 'E')
-    try_tread(obj, 'E', 6)
-    try_look(obj, 'F', 7)
-    try_slog(obj, 'F')
-    try_tread(obj, 'F')
-    try_look(obj, 'G')
-    try_slog(obj, 'G', 9)
-    try_tread(obj, 'G', 8)
-    try_look(obj, 'H', 10)
-    try_slog(obj, 'H')
-    try_tread(obj, 'H', 11)
+    try_methods(obj, 'A', slog_val=0)
+    try_methods(obj, 'B', tread_val=1)
+    try_methods(obj, 'C', 3, 2, 4)
+    try_methods(obj, 'D', look_val=5)
+    try_methods(obj, 'E', tread_val=6)
+    try_methods(obj, 'F', look_val=7)
+    try_methods(obj, 'G', slog_val=9, tread_val=8)
+    try_methods(obj, 'H', tread_val=11, look_val=10)
 
 
 def main():
